@@ -25,10 +25,24 @@ This creates `config/sendy.php`. You can also set everything via environment var
 
 ## Usage
 
+You can use the `Sendy` facade or inject/instantiate `SendyService` directly:
+
+```php
+use NextMigrant\Sendy\Facades\Sendy;
+
+// Via facade
+$response = Sendy::subscribe('john@example.com', 'list-abc', 'John', 'Doe');
+```
+
 ```php
 use NextMigrant\Sendy\SendyService;
 
+// Via direct instantiation
 $sendy = new SendyService;
+$response = $sendy->subscribe('john@example.com', 'list-abc', 'John', 'Doe');
+
+// Or via dependency injection (registered as a singleton)
+public function __construct(private SendyService $sendy) {}
 ```
 
 > **Note:** All methods are guarded by the `sendy.enabled` config value. When set to `false` (via `SENDY_ENABLED=false` in your `.env`), methods return `null` (or `[]` for `getLists`) without making any API calls.

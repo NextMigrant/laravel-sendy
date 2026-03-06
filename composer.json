@@ -45,7 +45,10 @@
         "laravel": {
             "providers": [
                 "NextMigrant\\Sendy\\SendyServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "Sendy": "NextMigrant\\Sendy\\Facades\\Sendy"
+            }
         }
     },
     "minimum-stability": "dev",

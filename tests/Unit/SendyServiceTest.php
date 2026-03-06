@@ -3,6 +3,7 @@
 namespace NextMigrant\Sendy\Tests\Unit;
 
 use Illuminate\Support\Facades\Http;
+use NextMigrant\Sendy\Facades\Sendy;
 use NextMigrant\Sendy\SendyResponse;
 use NextMigrant\Sendy\SendyService;
 use NextMigrant\Sendy\Tests\TestCase;
@@ -342,5 +343,32 @@ class SendyServiceTest extends TestCase
 
         $this->assertFalse($response->success);
         $this->assertEquals('Invalid API key', $response->message);
+    }
+
+    // ─── Facade ──────────────────────────────────────────────────────
+
+    public function test_facade_resolves_to_sendy_service(): void
+    {
+        $this->assertInstanceOf(SendyService::class, Sendy::getFacadeRoot());
+    }
+
+    public function test_facade_resolves_as_singleton(): void
+    {
+        $first = Sendy::getFacadeRoot();
+        $second = Sendy::getFacadeRoot();
+
+        $this->assertSame($first, $second);
+    }
+
+    public function test_facade_can_call_subscribe(): void
+    {
+        Http::fake([
+            'sendy.example.com/subscribe' => Http::response('1'),
+        ]);
+
+        $result = Sendy::subscribe('john@example.com', 'list-abc', 'John', 'Doe');
+
+        $this->assertInstanceOf(SendyResponse::class, $result);
+        $this->assertTrue($result->success);
     }
 }

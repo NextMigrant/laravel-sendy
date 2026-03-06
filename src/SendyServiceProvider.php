@@ -13,4 +13,12 @@ class SendyServiceProvider extends PackageServiceProvider
             ->name('sendy')
             ->hasConfigFile();
     }
+
+    public function packageRegistered(): void
+    {
+        $this->app->singleton(SendyService::class, function () {
+            return new SendyService;
+        });
+    }
 }
+
