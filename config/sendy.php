@@ -4,6 +4,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Enable / Disable Sendy
+    |--------------------------------------------------------------------------
+    |
+    | When set to false, all API methods will short-circuit and return null
+    | (or an empty array for getLists) without making any HTTP requests.
+    | Set to false in local/staging environments to avoid touching real lists.
+    |
+    */
+
+    'enabled' => env('SENDY_ENABLED', true),
+
+    /*
+    |--------------------------------------------------------------------------
     | Sendy API Key
     |--------------------------------------------------------------------------
     |

@@ -7,12 +7,15 @@ use Illuminate\Support\Facades\Http;
 
 class SendyService
 {
+    private bool $enabled;
+
     private ?string $apiKey;
 
     private ?string $baseUrl;
 
     public function __construct()
     {
+        $this->enabled = (bool) config('sendy.enabled', true);
         $this->apiKey = config('sendy.api_key');
         $this->baseUrl = config('sendy.url')
             ? rtrim(config('sendy.url'), '/')
@@ -28,7 +31,7 @@ class SendyService
      */
     public function subscribe(string $email, string $listId, string $firstName, string $lastName, ?string $fullName = null, array $options = []): ?SendyResponse
     {
-        if (! app()->environment('production')) {
+        if (! $this->enabled) {
             return null;
         }
 
@@ -59,7 +62,7 @@ class SendyService
      */
     public function unsubscribe(string $email, string $listId): ?SendyResponse
     {
-        if (! app()->environment('production')) {
+        if (! $this->enabled) {
             return null;
         }
 
@@ -79,7 +82,7 @@ class SendyService
      */
     public function deleteSubscriber(string $email, string $listId): ?SendyResponse
     {
-        if (! app()->environment('production')) {
+        if (! $this->enabled) {
             return null;
         }
 
@@ -101,7 +104,7 @@ class SendyService
      */
     public function getSubscriptionStatus(string $email, string $listId): ?SendyResponse
     {
-        if (! app()->environment('production')) {
+        if (! $this->enabled) {
             return null;
         }
 
@@ -128,7 +131,7 @@ class SendyService
      */
     public function getActiveSubscriberCount(string $listId): ?SendyResponse
     {
-        if (! app()->environment('production')) {
+        if (! $this->enabled) {
             return null;
         }
 
@@ -154,7 +157,7 @@ class SendyService
      */
     public function getLists(int $brandId, bool $includeHidden = false): array
     {
-        if (! app()->environment('production')) {
+        if (! $this->enabled) {
             return [];
         }
 

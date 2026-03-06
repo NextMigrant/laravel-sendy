@@ -14,19 +14,18 @@ class SendyServiceTest extends TestCase
     {
         parent::setUp();
 
-        app()->detectEnvironment(fn () => 'production');
-
         config([
+            'sendy.enabled' => true,
             'sendy.api_key' => 'test-api-key',
             'sendy.url' => 'https://sendy.example.com',
         ]);
     }
 
-    // ─── Environment Guard ──────────────────────────────────────────
+    // ─── Enabled Guard ───────────────────────────────────────────────
 
-    public function test_returns_early_in_non_production_environment(): void
+    public function test_returns_early_when_disabled(): void
     {
-        app()->detectEnvironment(fn () => 'testing');
+        config(['sendy.enabled' => false]);
 
         Http::fake();
 

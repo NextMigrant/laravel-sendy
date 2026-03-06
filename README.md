@@ -4,31 +4,11 @@ A reusable Laravel package that wraps the [Sendy](https://sendy.co) self-hosted 
 
 ## Installation
 
-### 1. Add the VCS repository
-
-```bash
-composer config repositories.laravel-sendy vcs git@github.com:NextMigrant/laravel-sendy.git
-```
-
-### 2. Configure GitHub authentication
-
-For Composer to access the private repo, configure a GitHub token:
-
-```bash
-# Locally (one-time, global)
-composer config --global github-oauth.github.com YOUR_GITHUB_TOKEN
-
-# In your deploy script (before composer install)
-composer config github-oauth.github.com YOUR_GITHUB_TOKEN
-```
-
-### 3. Require the package
-
 ```bash
 composer require nextmigrant/laravel-sendy
 ```
 
-### 4. Publish the config (optional)
+Optionally publish the config file:
 
 ```bash
 php artisan vendor:publish --tag=sendy-config
@@ -38,6 +18,7 @@ This creates `config/sendy.php`. You can also set everything via environment var
 
 | Variable | Description |
 |----------|-------------|
+| `SENDY_ENABLED` | Enable or disable all API calls (default: `true`). Set to `false` in local/staging. |
 | `SENDY_API_KEY` | Your Sendy installation API key |
 | `SENDY_URL` | Base URL of your Sendy installation (e.g. `https://sendy.yourdomain.com`) |
 | `SENDY_NEW_USERS_LIST_ID` | List ID for the default "new signups" list |
@@ -50,7 +31,7 @@ use NextMigrant\Sendy\SendyService;
 $sendy = new SendyService;
 ```
 
-> **Note:** All methods are guarded by `app()->environment('production')`. In non-production environments they return `null` (or `[]` for `getLists`) without making any API calls.
+> **Note:** All methods are guarded by the `sendy.enabled` config value. When set to `false` (via `SENDY_ENABLED=false` in your `.env`), methods return `null` (or `[]` for `getLists`) without making any API calls.
 
 ### Subscribe
 
@@ -137,4 +118,4 @@ composer test
 
 ## License
 
-Proprietary — NextMigrant. All rights reserved.
+MIT
