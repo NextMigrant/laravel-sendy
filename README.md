@@ -1,18 +1,34 @@
 # Laravel Sendy
 
-A generic [Sendy](https://sendy.co) email marketing API client for Laravel.
+A reusable Laravel package that wraps the [Sendy](https://sendy.co) self-hosted email marketing API. It provides a clean `SendyService` class for subscribing/unsubscribing users, managing list membership, querying subscription statuses and active counts, and retrieving brand lists — all with a built-in production environment guard so no real API calls are ever made during development or testing.
 
 ## Installation
 
-Add the repository to your app's `composer.json`, then require the package:
+### 1. Add the VCS repository
+
+```bash
+composer config repositories.laravel-sendy vcs git@github.com:NextMigrant/laravel-sendy.git
+```
+
+### 2. Configure GitHub authentication
+
+For Composer to access the private repo, configure a GitHub token:
+
+```bash
+# Locally (one-time, global)
+composer config --global github-oauth.github.com YOUR_GITHUB_TOKEN
+
+# In your deploy script (before composer install)
+composer config github-oauth.github.com YOUR_GITHUB_TOKEN
+```
+
+### 3. Require the package
 
 ```bash
 composer require nextmigrant/laravel-sendy
 ```
 
-## Configuration
-
-Publish the config file:
+### 4. Publish the config (optional)
 
 ```bash
 php artisan vendor:publish --tag=sendy-config
@@ -121,4 +137,4 @@ composer test
 
 ## License
 
-MIT
+Proprietary — NextMigrant. All rights reserved.
